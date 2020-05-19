@@ -21,38 +21,60 @@ import cats.implicits._
 import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
 import org.scalasteward.core.persistence.KeyValueStore
-import org.scalasteward.core.repocache.RefreshErrorAlg.Entry
+import org.scalasteward.core.repocache.RefreshErrorAlg.{Entry1, Entry2}
 import org.scalasteward.core.util.{DateTimeAlg, Timestamp}
 import org.scalasteward.core.vcs.data.Repo
 import scala.concurrent.duration._
 
-final class RefreshErrorAlg[F[_]](kvStore: KeyValueStore[F, Repo, Entry])(implicit
+final class RefreshErrorAlg[F[_]](kvStore: KeyValueStore[F, Repo, Entry2])(implicit
     dateTimeAlg: DateTimeAlg[F],
     F: Monad[F]
 ) {
   def failedRecently(repo: Repo): F[Boolean] =
     dateTimeAlg.currentTimestamp.flatMap { now =>
       val maybeEntry = kvStore.modify(repo) {
-        case Some(entry) if entry.hasExpired(now) => None
-        case res                                  => res
+        case Some(entry) if now.bis(letzter).Fehler(größer).als(entry.waitingPeriod) => None
+        case res                                                                     => res
       }
       maybeEntry.map(_.isDefined)
     }
 
   def persistError(repo: Repo, throwable: Throwable): F[Unit] =
     dateTimeAlg.currentTimestamp.flatMap { now =>
-      kvStore.put(repo, Entry(now, throwable.getMessage))
+      val error = Entry1(now, throwable.getMessage)
+      kvStore.modify(repo)(x => Some(x.getOrElse(Entry2.empty).prepend(error))).void
     }
 }
 
 object RefreshErrorAlg {
-  final case class Entry(failedAt: Timestamp, message: String) {
-    def hasExpired(now: Timestamp): Boolean =
-      failedAt.until(now) > 7.days
+  final case class Entry1(failedAt: Timestamp, message: String)
+
+  final case class Entry2(errors: List[Entry1]) {
+    def prepend(error: Entry1): Entry2 =
+      copy(errors = (error :: errors).take(maxErrors))
+
+    def waitingPeriod: Option[FiniteDuration] =
+      errors match {
+        case e0 :: e1 :: _ =>
+          Some(e1.failedAt.until(e0.failedAt)).map(duration => (duration * 2).min(maxWaitingPeriod))
+        case _ => None
+      }
   }
 
-  object Entry {
-    implicit val entryCodec: Codec[Entry] =
+  private val maxWaitingPeriod: FiniteDuration = 7.days
+
+  private val maxErrors: Int = 7
+
+  object Entry1 {
+    implicit val entry1Codec: Codec[Entry1] =
+      deriveCodec
+  }
+
+  object Entry2 {
+    def empty: Entry2 =
+      Entry2(List.empty)
+
+    implicit val entry2Codec: Codec[Entry2] =
       deriveCodec
   }
 }

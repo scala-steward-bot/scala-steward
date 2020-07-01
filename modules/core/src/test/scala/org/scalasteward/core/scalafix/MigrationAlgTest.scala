@@ -23,8 +23,9 @@ class MigrationAlgTest extends AnyFunSuite with Matchers {
          |  }
          |]""".stripMargin
     val initialState = MockState.empty.add(extraFile, content)
-    val migrations =
-      MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA(initialState).unsafeRunSync
+    val migrations = initialState.init
+      .flatMap(MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA)
+      .unsafeRunSync
 
     migrations.size should be > 1
     (migrations should contain).oneElementOf(
@@ -52,8 +53,9 @@ class MigrationAlgTest extends AnyFunSuite with Matchers {
          |  }
          |]""".stripMargin
     val initialState = MockState.empty.add(extraFile, content)
-    val migrations =
-      MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA(initialState).unsafeRunSync
+    val migrations = initialState.init
+      .flatMap(MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA)
+      .unsafeRunSync
 
     migrations shouldBe List(
       Migration(
@@ -69,14 +71,18 @@ class MigrationAlgTest extends AnyFunSuite with Matchers {
   test("loadMigrations with extra file and disableDefaults = true only") {
     val initialState = MockState.empty.add(extraFile, "disableDefaults = true")
     val migrations =
-      MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA(initialState).unsafeRunSync
+      initialState.init
+        .flatMap(MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA)
+        .unsafeRunSync
     migrations.isEmpty shouldBe true
   }
 
   test("loadMigrations with malformed extra file") {
     val initialState = MockState.empty.add(extraFile, """{"key": "i'm not a valid Migration}""")
-    val migrations =
-      MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA(initialState).attempt.unsafeRunSync
+    val migrations = initialState.init
+      .flatMap(MigrationAlg.loadMigrations[MockEff](Some(extraFile)).runA)
+      .attempt
+      .unsafeRunSync
     migrations.isLeft shouldBe true
   }
 

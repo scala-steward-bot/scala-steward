@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 
 class ScalafmtAlgTest extends AnyFunSuite with Matchers {
   test("getScalafmtVersion on unquoted version") {
-    val repo = Repo("fthomas", "scala-steward")
+    val repo = Repo("scalafmt-alg", "test-1")
     val repoDir = config.workspace / repo.owner / repo.repo
     val scalafmtConf = repoDir / ".scalafmt.conf"
     val initialState = MockState.empty.add(
@@ -20,7 +20,7 @@ class ScalafmtAlgTest extends AnyFunSuite with Matchers {
         |""".stripMargin
     )
     val (state, maybeUpdate) =
-      scalafmtAlg.getScalafmtVersion(repo).run(initialState).unsafeRunSync()
+      initialState.init.flatMap(scalafmtAlg.getScalafmtVersion(repo).run).unsafeRunSync()
 
     maybeUpdate shouldBe Some(Version("2.0.0-RC8"))
     state shouldBe MockState.empty.copy(
@@ -36,7 +36,7 @@ class ScalafmtAlgTest extends AnyFunSuite with Matchers {
   }
 
   test("getScalafmtVersion on quoted version") {
-    val repo = Repo("fthomas", "scala-steward")
+    val repo = Repo("scalafmt-alg", "test-2")
     val repoDir = config.workspace / repo.owner / repo.repo
     val scalafmtConf = repoDir / ".scalafmt.conf"
     val initialState = MockState.empty.add(
@@ -46,11 +46,8 @@ class ScalafmtAlgTest extends AnyFunSuite with Matchers {
         |align.openParenCallSite = false
         |""".stripMargin
     )
-    val (_, maybeUpdate) = scalafmtAlg.getScalafmtVersion(repo).run(initialState).unsafeRunSync()
+    val (_, maybeUpdate) =
+      initialState.init.flatMap(scalafmtAlg.getScalafmtVersion(repo).run).unsafeRunSync()
     maybeUpdate shouldBe Some(Version("2.0.0-RC8"))
-  }
-
-  test("editScalafmtConf") {
-    // Tested in EditAlgTest
   }
 }

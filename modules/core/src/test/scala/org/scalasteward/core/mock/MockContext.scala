@@ -31,7 +31,7 @@ import scala.concurrent.duration._
 
 object MockContext {
   implicit val config: Config = Config(
-    workspace = File.temp / "ws",
+    workspace = File.temp / "scala-steward" / "workspace",
     reposFile = File.temp / "repos.md",
     defaultRepoConfigFile = Some(File.temp / "default.scala-steward.conf"),
     gitAuthor = Author("Bot Doe", "bot@example.org"),

@@ -1,11 +1,10 @@
 package org.scalasteward.core.repoconfig
 
-import better.files.File
 import eu.timepit.refined.types.numeric.PosInt
 import org.scalasteward.core.TestSyntax._
 import org.scalasteward.core.data.{GroupId, Update}
 import org.scalasteward.core.mock.MockContext.repoConfigAlg
-import org.scalasteward.core.mock.MockState
+import org.scalasteward.core.mock.{MockContext, MockState}
 import org.scalasteward.core.util.Nel
 import org.scalasteward.core.vcs.data.Repo
 import org.scalatest.funsuite.AnyFunSuite
@@ -14,7 +13,7 @@ import org.scalatest.matchers.should.Matchers
 class RepoConfigAlgTest extends AnyFunSuite with Matchers {
   test("config with all fields set") {
     val repo = Repo("fthomas", "scala-steward")
-    val configFile = File.temp / "ws/fthomas/scala-steward/.scala-steward.conf"
+    val configFile = MockContext.config.workspace / "fthomas/scala-steward/.scala-steward.conf"
     val content =
       """|updates.allow  = [ { groupId = "eu.timepit"} ]
          |updates.pin  = [
@@ -31,7 +30,8 @@ class RepoConfigAlgTest extends AnyFunSuite with Matchers {
          |commits.message = "Update ${artifactName} from ${currentVersion} to ${nextVersion}"
          |""".stripMargin
     val initialState = MockState.empty.add(configFile, content)
-    val config = repoConfigAlg.readRepoConfigOrDefault(repo).runA(initialState).unsafeRunSync()
+    val config =
+      initialState.init.flatMap(repoConfigAlg.readRepoConfigOrDefault(repo).runA).unsafeRunSync()
 
     config shouldBe RepoConfig(
       pullRequests = PullRequestsConfig(frequency = Some(PullRequestFrequency.Weekly)),
@@ -132,10 +132,10 @@ class RepoConfigAlgTest extends AnyFunSuite with Matchers {
 
   test("malformed config") {
     val repo = Repo("fthomas", "scala-steward")
-    val configFile = File.temp / "ws/fthomas/scala-steward/.scala-steward.conf"
+    val configFile = MockContext.config.workspace / "fthomas/scala-steward/.scala-steward.conf"
     val initialState = MockState.empty.add(configFile, """updates.ignore = [ "foo """)
     val (state, config) =
-      repoConfigAlg.readRepoConfigOrDefault(repo).run(initialState).unsafeRunSync()
+      initialState.init.flatMap(repoConfigAlg.readRepoConfigOrDefault(repo).run).unsafeRunSync()
 
     config shouldBe RepoConfig()
     state.logs.headOption.map { case (_, msg) => msg }.getOrElse("") should

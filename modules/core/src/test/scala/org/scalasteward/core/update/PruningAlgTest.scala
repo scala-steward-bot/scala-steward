@@ -8,9 +8,9 @@ import org.scalatest.matchers.should.Matchers
 
 class PruningAlgTest extends AnyFunSuite with Matchers {
   test("needsAttention") {
-    val repo = Repo("fthomas", "scalafix-test")
+    val repo = Repo("pruning-alg", "test-1")
     val repoCacheFile =
-      config.workspace / "store/repo_cache/v1/fthomas/scalafix-test/repo_cache.json"
+      config.workspace / s"store/repo_cache/v1/${repo.show}/repo_cache.json"
     val repoCacheContent =
       s"""|{
          |  "sha1": "12def27a837ba6dc9e17406cbbe342fba3527c14",
@@ -22,7 +22,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
          |  }
          |}""".stripMargin
     val pullRequestsFile =
-      config.workspace / "store/pull_requests/v1/fthomas/scalafix-test/pull_requests.json"
+      config.workspace / s"store/pull_requests/v1/${repo.show}/pull_requests.json"
     val pullRequestsContent =
       s"""|{
          |  "https://github.com/fthomas/scalafix-test/pull/27" : {
@@ -55,7 +55,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
     val initial = MockState.empty
       .add(repoCacheFile, repoCacheContent)
       .add(pullRequestsFile, pullRequestsContent)
-    val state = pruningAlg.needsAttention(repo).runS(initial).unsafeRunSync()
+    val state = initial.init.flatMap(pruningAlg.needsAttention(repo).runS).unsafeRunSync()
 
     state shouldBe initial.copy(
       commands = Vector(
@@ -63,17 +63,17 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
         List("read", pullRequestsFile.toString)
       ),
       logs = Vector(
-        (None, "Find updates for fthomas/scalafix-test"),
+        (None, s"Find updates for ${repo.show}"),
         (None, "Found 0 updates"),
-        (None, "fthomas/scalafix-test is up-to-date")
+        (None, s"${repo.show} is up-to-date")
       )
     )
   }
 
   test("needsAttention: 0 updates when includeScala not specified in repo config") {
-    val repo = Repo("fthomas", "scalafix-test")
+    val repo = Repo("pruning-alg", "test-2")
     val repoCacheFile =
-      config.workspace / "store/repo_cache/v1/fthomas/scalafix-test/repo_cache.json"
+      config.workspace / s"store/repo_cache/v1/${repo.show}/repo_cache.json"
     val repoCacheContent =
       s"""|{
          |  "sha1": "12def27a837ba6dc9e17406cbbe342fba3527c14",
@@ -114,7 +114,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
          |  }
          |}""".stripMargin
     val pullRequestsFile =
-      config.workspace / "store/pull_requests/v1/fthomas/scalafix-test/pull_requests.json"
+      config.workspace / s"store/pull_requests/v1/${repo.show}/pull_requests.json"
     val pullRequestsContent =
       s"""|{
          |  "https://github.com/fthomas/scalafix-test/pull/27" : {
@@ -162,7 +162,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
       .add(repoCacheFile, repoCacheContent)
       .add(pullRequestsFile, pullRequestsContent)
       .add(versionsFile, versionsContent)
-    val state = pruningAlg.needsAttention(repo).runS(initial).unsafeRunSync()
+    val state = initial.init.flatMap(pruningAlg.needsAttention(repo).runS).unsafeRunSync()
 
     state shouldBe initial.copy(
       commands = Vector(
@@ -170,17 +170,17 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
         List("read", pullRequestsFile.toString)
       ),
       logs = Vector(
-        (None, "Find updates for fthomas/scalafix-test"),
+        (None, s"Find updates for ${repo.show}"),
         (None, "Found 0 updates"),
-        (None, "fthomas/scalafix-test is up-to-date")
+        (None, s"${repo.show} is up-to-date")
       )
     )
   }
 
   test("needsAttention: update scala-library when includeScala=true in repo config") {
-    val repo = Repo("fthomas", "scalafix-test")
+    val repo = Repo("pruning-alg", "test-3")
     val repoCacheFile =
-      config.workspace / "store/repo_cache/v1/fthomas/scalafix-test/repo_cache.json"
+      config.workspace / s"store/repo_cache/v1/${repo.show}/repo_cache.json"
     val repoCacheContent =
       s"""|{
          |  "sha1": "12def27a837ba6dc9e17406cbbe342fba3527c14",
@@ -231,7 +231,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
          |  }
          |}""".stripMargin
     val pullRequestsFile =
-      config.workspace / "store/pull_requests/v1/fthomas/scalafix-test/pull_requests.json"
+      config.workspace / s"store/pull_requests/v1/${repo.show}/pull_requests.json"
     val pullRequestsContent =
       s"""|{
          |  "https://github.com/fthomas/scalafix-test/pull/27" : {
@@ -279,7 +279,7 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
       .add(repoCacheFile, repoCacheContent)
       .add(pullRequestsFile, pullRequestsContent)
       .add(versionsFile, versionsContent)
-    val state = pruningAlg.needsAttention(repo).runS(initial).unsafeRunSync()
+    val state = initial.init.flatMap(pruningAlg.needsAttention(repo).runS).unsafeRunSync()
 
     state shouldBe initial.copy(
       commands = Vector(
@@ -291,11 +291,11 @@ class PruningAlgTest extends AnyFunSuite with Matchers {
         List("read", pullRequestsFile.toString)
       ),
       logs = Vector(
-        (None, "Find updates for fthomas/scalafix-test"),
+        (None, s"Find updates for ${repo.show}"),
         (None, "Found 1 update:\n  org.scala-lang:scala-library : 2.12.10 -> 2.12.11"),
         (
           None,
-          "fthomas/scalafix-test is outdated:\n  new version: org.scala-lang:scala-library : 2.12.10 -> 2.12.11"
+          s"${repo.show} is outdated:\n  new version: org.scala-lang:scala-library : 2.12.10 -> 2.12.11"
         )
       )
     )

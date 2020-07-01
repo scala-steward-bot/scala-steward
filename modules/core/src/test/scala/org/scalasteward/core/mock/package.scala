@@ -10,4 +10,7 @@ package object mock {
 
   def applyPure[F[_]: Applicative, S, A](f: S => (S, A)): StateT[F, S, A] =
     StateT.apply(s => f(s).pure[F])
+
+  def unsafeRun[A](eff: MockEff[A]): A =
+    eff.runA(MockState.empty).unsafeRunSync()
 }

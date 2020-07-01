@@ -1,6 +1,9 @@
 package org.scalasteward.core.mock
 
 import better.files.File
+import cats.effect.IO
+import org.scalasteward.core.io.FileAlgTest.ioFileAlg
+import cats.implicits._
 
 final case class MockState(
     commands: Vector[List[String]],
@@ -21,6 +24,9 @@ final case class MockState(
 
   def log(maybeThrowable: Option[Throwable], msg: String): MockState =
     copy(logs = logs :+ ((maybeThrowable, msg)))
+
+  def init: IO[MockState] =
+    files.toList.traverse_ { case (file, content) => ioFileAlg.writeFile(file, content) }.as(this)
 }
 
 object MockState {

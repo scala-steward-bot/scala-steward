@@ -1,8 +1,41 @@
-The repos.md file for the public Scala Steward instance has been moved to
-<https://github.com/scala-steward-org/repos/blob/main/repos-github.md>.
-If you want Scala Steward to keep your project up-to-date, please add it there.
-
-- scala-steward-org/scala-steward
-- scala-steward-org/test-repo-2
-- scala-steward-org/test-repo-2:slash-syntax-2
-- scala-steward-org/test-repo-2:test-branch
+- b-studios/scala-effekt
+- folone/poi.scala
+- runarorama/latr
+- sbt/sbt-ghpages
+- sirthias/parboiled
+- sirthias/parboiled2
+- squeryl/squeryl
+- tkawachi/sbt-doctest
+- sbt/sbt-release
+- sbt/sbt-protobuf
+- pocketberserker/scala-logic
+- xuwei-k/jwt-scala
+- xuwei-k/replace-symbol-literals
+- xuwei-k/play-ws-scalafix
+- xuwei-k/scalaz-docs
+- xuwei-k/scala-protobuf-docs
+- xuwei-k/scalikejdbc-flyway-sbt-example
+- xuwei-k/mima-web
+- xuwei-k/favorite_typo
+- xuwei-k/applybuilder
+- xuwei-k/qiita-twitter-bot
+- xuwei-k/play-json-extra
+- xuwei-k/httpz
+- xuwei-k/webpush-scala
+- xuwei-k/discourse-bot
+- xuwei-k/httpmock
+- xuwei-k/iarray
+- xuwei-k/githubot
+- xuwei-k/play2scalaz
+- xuwei-k/mima
+- xuwei-k/sonatype
+- xuwei-k/optparse-applicative
+- xuwei-k/sbt-proguard
+- xuwei-k/pj
+- xuwei-k/zeroapply
+- xuwei-k/sbt-class-diagram
+- xuwei-k/nobox
+- xuwei-k/sbt-conflict-classes
+- xuwei-k/scalajspack
+- xuwei-k/wartremover-scalikejdbc
+- xuwei-k/scodec-msgpack

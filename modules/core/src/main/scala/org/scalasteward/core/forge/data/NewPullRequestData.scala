@@ -53,11 +53,11 @@ object NewPullRequestData {
     val migrations = edits.collect { case scalafixEdit: ScalafixEdit => scalafixEdit }
     val appliedMigrations = migrationNote(migrations)
     val oldVersionDetails = oldVersionNote(filesWithOldVersion, update)
-    val details = List(
-      appliedMigrations,
+    val details = List[Option[String]](
+      appliedMigrations.map(_.toHtml),
       oldVersionDetails,
-      adjustFutureUpdates(update).some,
-      configParsingError.map(configParsingErrorDetails)
+      adjustFutureUpdates(update).toHtml.some,
+      configParsingError.map(configParsingErrorDetails).map(_.toHtml)
     ).flatten
 
     val updatesText = update.on(
@@ -107,7 +107,7 @@ object NewPullRequestData {
         |
         |_Have a fantastic day writing Scala!_
         |
-        |${details.map(_.toHtml).mkString("\n")}
+        |${details.mkString("\n\n")}
         |
         |<sup>
         |${labels.mkString("labels: ", ", ", "")}
@@ -163,22 +163,19 @@ object NewPullRequestData {
       case None      => s"$groupId:$artifactId"
     }
 
-  def oldVersionNote(files: List[String], update: Update): Option[Details] =
+  def oldVersionNote(files: List[String], update: Update): Option[String] =
     Option.when(files.nonEmpty) {
       val (number, numberWithVersion) = update.on(
         update = u => ("number", s"number (${u.currentVersion})"),
         grouped = _ => ("numbers", "numbers")
       )
 
-      Details(
-        s"🔍 Files still referring to the old version $number",
-        s"""The following files still refer to the old version $numberWithVersion.
-           |You might want to review and update them manually.
-           |```
-           |${files.mkString("\n")}
-           |```
-           |""".stripMargin.trim
-      )
+      s"""The following files still refer to the old version $numberWithVersion.
+         |You might want to review and update them manually.
+         |```
+         |${files.mkString("\n")}
+         |```
+         |""".stripMargin.trim
     }
 
   def adjustFutureUpdates(update: Update): Details = Details(

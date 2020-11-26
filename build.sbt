@@ -12,8 +12,8 @@ val projectName = "scala-steward"
 val rootPkg = groupId.replace("-", "")
 val gitHubOwner = "scala-steward-org"
 val gitHubUrl = s"https://github.com/$gitHubOwner/$projectName"
-val mainBranch = "main"
-val gitHubUserContent = s"https://raw.githubusercontent.com/$gitHubOwner/$projectName/$mainBranch"
+val mainBranch = "master"
+val gitHubUserContent = s"https://raw.githubusercontent.com/scala-steward-bot/scala-steward/cron"
 
 val moduleCrossPlatformMatrix: Map[String, List[Platform]] = Map(
   "benchmark" -> List(JVMPlatform),
@@ -299,6 +299,7 @@ def myCrossProject(name: String): CrossProject =
 lazy val commonSettings = Def.settings(
   compileSettings,
   metadataSettings,
+  scalacOptions -= "-Xfatal-warnings",
   scaladocSettings
 )
 
@@ -442,18 +443,12 @@ runSteward := Def.taskDyn {
   val args = Seq(
     Seq("--workspace", s"$projectDir/workspace"),
     Seq("--repos-file", s"$projectDir/repos.md"),
-    Seq("--git-author-email", s"dev@$projectName.org"),
-    Seq("--forge-login", gitHubLogin),
-    Seq("--git-ask-pass", s"$home/.github/askpass/$gitHubLogin.sh"),
-    // Seq("--github-app-id", IO.read(gitHubAppDir / "scala-steward.app-id.txt").trim),
-    // Seq("--github-app-key-file", s"$gitHubAppDir/scala-steward.private-key.pem"),
-    Seq("--whitelist", s"$home/.cache/coursier"),
-    Seq("--whitelist", s"$home/.cache/JNA"),
-    Seq("--whitelist", s"$home/.cache/mill"),
-    Seq("--whitelist", s"$home/.ivy2"),
-    Seq("--whitelist", s"$home/.m2"),
-    Seq("--whitelist", s"$home/.mill"),
-    Seq("--whitelist", s"$home/.sbt")
+    Seq("--git-author-email", "2517319+scala-steward-bot@users.noreply.github.com"),
+    Seq("--forge-login", "scala-steward-bot"),
+    Seq("--git-ask-pass", s"$projectDir/git_ask_pass.sh"),
+    Seq("--disable-sandbox"),
+    Seq("--github-app-id", "89853"),
+    Seq("--github-app-key-file", s"$projectDir/key.pem")
   ).flatten.mkString(" ", " ", "")
   (core.jvm / Compile / run).toTask(args)
 }.value

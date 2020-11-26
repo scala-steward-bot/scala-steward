@@ -1,14 +1,37 @@
-The repos.md file for the public Scala Steward instance hosted by [VirtusLab](https://www.virtuslab.com/) is at <https://github.com/VirtusLab/scala-steward-repos/blob/main/repos-github.md>.
-If you want [@scala-steward](https://github.com/scala-steward) to keep your project up-to-date, please add it there.
-
-List the repositories here you want your own Scala Steward to keep up-to-date.
-The format is "- $owner/$repo".
-If you want Scala Steward to keep a non-default branch up-to-date, use "- $owner/$repo:$branch".
-All lines that do not start with a hyphen and space are ignored.
-
-- scala-steward-org/mill-plugin
-- scala-steward-org/sbt-plugin
-- scala-steward-org/scala-steward
-- scala-steward-org/test-repo-1
-- scala-steward-org/test-repo-1:scala-cli-test
-- scala-steward-org/test-repo-2
+- atnos-org/eff
+- rediscala/rediscala
+- b-studios/scala-effekt
+- folone/poi.scala
+- runarorama/latr
+- sbt/sbt-ghpages
+- sirthias/parboiled
+- sirthias/parboiled2
+- squeryl/squeryl
+- tkawachi/sbt-doctest
+- sbt/sbt-release
+- sbt/sbt-protobuf
+- pocketberserker/scala-logic
+- xuwei-k/jwt-scala
+- xuwei-k/play-ws-scalafix
+- xuwei-k/scalaz-docs
+- xuwei-k/scala-protobuf-docs
+- xuwei-k/scalikejdbc-flyway-sbt-example
+- xuwei-k/mima-web
+- xuwei-k/applybuilder
+- xuwei-k/play-json-extra
+- xuwei-k/httpz
+- xuwei-k/webpush-scala
+- xuwei-k/iarray
+- xuwei-k/play2scalaz
+- xuwei-k/mima
+- xuwei-k/sonatype
+- xuwei-k/optparse-applicative
+- xuwei-k/sbt-proguard
+- xuwei-k/pj
+- xuwei-k/zeroapply
+- xuwei-k/sbt-class-diagram
+- xuwei-k/nobox
+- xuwei-k/sbt-conflict-classes
+- xuwei-k/scalajspack
+- xuwei-k/wartremover-scalikejdbc
+- xuwei-k/scodec-msgpack

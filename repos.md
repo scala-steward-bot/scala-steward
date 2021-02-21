@@ -8,3 +8,33 @@
 - tkawachi/sbt-doctest
 - sbt/sbt-release
 - sbt/sbt-protobuf
+- xuwei-k/replace-symbol-literals
+- xuwei-k/play-ws-scalafix
+ - xuwei-k/scalaz-docs
+ - xuwei-k/scala-protobuf-docs
+ - xuwei-k/scalikejdbc-flyway-sbt-example
+ - xuwei-k/mima-web
+ - xuwei-k/favorite_typo
+ - xuwei-k/applybuilder
+ - xuwei-k/qiita-twitter-bot
+ - xuwei-k/play-json-extra
+ - xuwei-k/httpz
+ - xuwei-k/webpush-scala
+ - xuwei-k/discourse-bot
+ - xuwei-k/httpmock
+ - xuwei-k/scalaz-magnolia
+ - xuwei-k/iarray
+ - xuwei-k/githubot
+ - xuwei-k/play2scalaz
+ - xuwei-k/mima
+ - xuwei-k/sonatype
+ - xuwei-k/optparse-applicative
+ - xuwei-k/sbt-proguard
+ - xuwei-k/pj
+ - xuwei-k/zeroapply
+ - xuwei-k/sbt-class-diagram
+ - xuwei-k/nobox
+ - xuwei-k/sbt-conflict-classes
+ - xuwei-k/scalajspack
+ - xuwei-k/wartremover-scalikejdbc
+ - xuwei-k/scodec-msgpack

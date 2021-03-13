@@ -3,28 +3,16 @@ name: CI
 on:
   push:
   workflow_dispatch:
-  schedule:
-    - cron: '30 * * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: olafurpg/setup-scala@v10
+      - uses: scala-steward-org/scala-steward-action@v2.13.0
         with:
-          java-version: "adopt@1.8"
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.sbt
-            ~/.ivy2/cache
-            ~/.coursier/cache/v1
-            ~/.cache/coursier/v1
-            ~/AppData/Local/Coursier/Cache/v1
-            ~/Library/Caches/Coursier/v1
-          key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
-      - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
-      - uses: laughedelic/coursier-setup@v1
-      - run: cs install scalafmt
-      - run: GITHUB_TOKEN=${{ secrets.MY_GITHUB_TOKEN }} sbt -v runSteward
+          github-token: ${{ secrets.MY_GITHUB_TOKEN }}
+          github-app-id: 89853
+          github-app-key: ${{ secrets.APP_PRIVATE_KEY }}
+          author-email: 2517319+scala-steward-bot@users.noreply.github.com
+          scala-steward-version: 0.9.1-130-b649182c-SNAPSHOT    

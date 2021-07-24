@@ -39,3 +39,4 @@
 - xuwei-k/scalajspack
 - xuwei-k/wartremover-scalikejdbc
 - xuwei-k/scodec-msgpack
+

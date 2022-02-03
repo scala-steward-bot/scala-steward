@@ -1,3 +1,4 @@
+- rediscala/rediscala
 - b-studios/scala-effekt
 - folone/poi.scala
 - runarorama/latr

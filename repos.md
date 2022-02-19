@@ -11,7 +11,6 @@
 - sbt/sbt-protobuf
 - pocketberserker/scala-logic
 - xuwei-k/jwt-scala
-- xuwei-k/replace-symbol-literals
 - xuwei-k/play-ws-scalafix
 - xuwei-k/scalaz-docs
 - xuwei-k/scala-protobuf-docs

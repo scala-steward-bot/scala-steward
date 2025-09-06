@@ -7,7 +7,7 @@
 - sirthias/parboiled
 - sirthias/parboiled2
 - squeryl/squeryl
-- tkawachi/sbt-doctest
+- sbt-doctest/sbt-doctest
 - tototoshi/scala-csv
 - sbt/sbt-release
 - sbt/sbt-protobuf

@@ -8,6 +8,7 @@
 - sirthias/parboiled2
 - squeryl/squeryl
 - tkawachi/sbt-doctest
+- tototoshi/scala-csv
 - sbt/sbt-release
 - sbt/sbt-protobuf
 - pocketberserker/scala-logic

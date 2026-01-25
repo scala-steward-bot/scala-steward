@@ -35,7 +35,7 @@ object GetReposFromGitHubApp extends IOApp {
     }).use { repos =>
       repos.flatMap { list =>
         IO {
-          val values = list.map(a => s"- ${a.owner}/${a.repo}").mkString("\n")
+          val values = list.map(a => s"- ${a.owner}/${a.repo}").mkString("", "\n", "\n")
           println(values)
           Files.writeString(
             Path.of("repos.md"),

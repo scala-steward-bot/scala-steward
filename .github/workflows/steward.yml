@@ -1,0 +1,25 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '50 */3 * * *'
+concurrency: steward
+jobs:
+  scala-steward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    if: ${{ github.repository_owner == 'scala-steward-bot' }}
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      with:
+        java-version: 21
+        distribution: temurin
+    - uses: sbt/setup-sbt@a627500d27445f8c5021755a439829b6e78e3358 # v1.1.15
+    - uses: coursier/coursier-setup@f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9 # v2.0.2
+    - run: cs install scalafmt
+    - run: cs install scalafix
+    - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
+    - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp"
+    - run: git diff
+    - run: cat repos.md
+    - run: GITHUB_TOKEN=${{ secrets.MY_GITHUB_TOKEN }} sbt -v runSteward

@@ -1,10 +1,9 @@
 name: CI
 
 on:
-  push:
   workflow_dispatch:
   schedule:
-    - cron: '30 */2 * * *'
+    - cron: '0 0 1,15 * *'
 
 
 concurrency:

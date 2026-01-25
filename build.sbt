@@ -14,13 +14,13 @@ run / fork := true
 
 val projectDir = file(".").getAbsolutePath
 
-TaskKey[Unit]("runSteward") := Def.uncached {
+TaskKey[Unit]("selfUpdate") := Def.uncached {
   (Compile / runMain)
     .toTask(
       Seq(
         Seq(" org.scalasteward.core.Main"),
         Seq("--workspace", s"$projectDir/workspace"),
-        Seq("--repos-file", s"$projectDir/repos.md"),
+        Seq("--repos-file", s"$projectDir/self.md"),
         Seq("--git-author-email", "2517319+scala-steward-bot@users.noreply.github.com"),
         Seq("--forge-login", "scala-steward-bot"),
         Seq("--git-ask-pass", s"$projectDir/git_ask_pass.sh"),

@@ -18,8 +18,16 @@ jobs:
     - uses: coursier/coursier-setup@f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9 # v2.0.2
     - run: cs install scalafmt
     - run: cs install scalafix
+    - run: sbt -v selfUpdate
     - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
     - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp"
+    - run: rm key.pem
     - run: git diff
     - run: cat repos.md
-    - run: GITHUB_TOKEN=${{ secrets.MY_GITHUB_TOKEN }} sbt -v runSteward
+    - uses: xuwei-k/scala-steward-action@cf1fa61d110d3acda0d6dfd981ec4db1b870935c
+      with:
+        author-email: "2517319+scala-steward-bot@users.noreply.github.com"
+        author-name: "scala-steward-bot"
+        github-token: ${{ secrets.MY_GITHUB_TOKEN }}
+        repos-file: "repos.md"
+        do-not-fork: "false"

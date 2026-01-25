@@ -25,7 +25,6 @@
 - xuwei-k/mima
 - xuwei-k/optparse-applicative
 - xuwei-k/sbt-proguard
-- xuwei-k/pj
 - xuwei-k/zeroapply
 - xuwei-k/sbt-class-diagram
 - xuwei-k/nobox

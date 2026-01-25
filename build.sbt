@@ -24,6 +24,7 @@ TaskKey[Unit]("selfUpdate") := Def.uncached {
         Seq("--git-author-email", "2517319+scala-steward-bot@users.noreply.github.com"),
         Seq("--forge-login", "scala-steward-bot"),
         Seq("--git-ask-pass", s"$projectDir/git_ask_pass.sh"),
+        Seq("--do-not-fork"),
         Seq("--disable-sandbox"),
       ).flatten.mkString(" ")
     )

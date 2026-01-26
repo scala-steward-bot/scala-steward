@@ -25,6 +25,7 @@ jobs:
     - run: cat repos.md
     - uses: xuwei-k/scala-steward-action@cf1fa61d110d3acda0d6dfd981ec4db1b870935c
       with:
+        cache-ttl: "0s"
         author-email: "2517319+scala-steward-bot@users.noreply.github.com"
         author-name: "scala-steward-bot"
         github-token: ${{ secrets.MY_GITHUB_TOKEN }}

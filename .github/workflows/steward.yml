@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   schedule:
-    - cron: '50 */3 * * *'
+    - cron: '0 */2 * * *'
 concurrency: steward
 jobs:
   scala-steward:

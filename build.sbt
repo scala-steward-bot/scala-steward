@@ -14,7 +14,7 @@ run / fork := true
 
 val projectDir = file(".").getAbsolutePath
 
-TaskKey[Unit]("selfUpdate") := Def.uncached {
+TaskKey[Unit]("selfUpdate") := {
   (Compile / runMain)
     .toTask(
       Seq(

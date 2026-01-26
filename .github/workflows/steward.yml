@@ -22,7 +22,6 @@ jobs:
     - run: cs install scalafmt
     - run: cs install scalafix
     - run: sbt -v selfUpdate
-    - run: sbt -v cleanFull
     - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
     - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp"
     - run: rm key.pem

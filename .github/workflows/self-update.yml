@@ -1,5 +1,10 @@
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '5 2 * * *'
 concurrency: self-update
 jobs:
   scala-steward:
@@ -13,3 +18,12 @@ jobs:
         java-version: 21
         distribution: temurin
     - uses: sbt/setup-sbt@a627500d27445f8c5021755a439829b6e78e3358 # v1.1.15
+    - id: generate_token
+      uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+      with:
+        app-id: 89536
+        private-key: ${{ secrets.XUWEI_K_BOT_KEY }}
+    - uses: coursier/coursier-setup@f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9 # v2.0.2
+    - run: cs install scalafmt
+    - run: cs install scalafix
+    - run: GITHUB_TOKEN="${{ steps.generate_token.outputs.token }}" sbt -v selfUpdate

@@ -1,1 +1,1 @@
-- scala-steward-bot/steward
+- scala-steward-bot/scala-steward

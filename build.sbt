@@ -1,4 +1,4 @@
-scalaVersion := "3.8.2-RC1"
+scalaVersion := "3.8.2-RC2"
 
 evictionErrorLevel := Level.Warn
 

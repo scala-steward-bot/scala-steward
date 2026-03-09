@@ -23,7 +23,7 @@ jobs:
     - run: rm key.pem
     - run: git diff
     - run: cat repos.md
-    - uses: scala-steward-org/scala-steward-action@e47786bae0a964b4202df1d66b65c581a53257b0 # v2.83.0
+    - uses: scala-steward-org/scala-steward-action@026472ebc0e1f80577b240b249e3dc1494e7041b # v2.86.0
       with:
         cache-ttl: "0s"
         author-email: "2517319+scala-steward-bot@users.noreply.github.com"

@@ -1,4 +1,5 @@
 - atnos-org/eff
+- atnos-org/eff:7.x
 - rediscala/rediscala
 - b-studios/scala-effekt
 - folone/poi.scala

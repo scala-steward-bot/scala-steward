@@ -15,6 +15,7 @@ import org.scalasteward.core.forge.github.GitHubAuthAlg
 import org.scalasteward.core.util.HttpJsonClient
 import org.typelevel.log4cats.SelfAwareStructuredLogger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
+import scala.util.Random
 
 object GetReposFromGitHubApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
@@ -35,7 +36,7 @@ object GetReposFromGitHubApp extends IOApp {
     }).use { repos =>
       repos.flatMap { list =>
         IO {
-          val values = list.map(a => s"- ${a.owner}/${a.repo}").mkString("", "\n", "\n")
+          val values = Random.shuffle(list).map(a => s"- ${a.owner}/${a.repo}").mkString("", "\n", "\n")
           println(values)
           Files.writeString(
             Path.of("repos.md"),

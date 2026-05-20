@@ -17,7 +17,7 @@ jobs:
       with:
         java-version: 21
         distribution: temurin
-    - uses: sbt/setup-sbt@93e926cbdb4a428e41b4ef754124ec82925ffdc2 # v1.1.23
+    - uses: sbt/setup-sbt@2e222825582620cc38d2a54e674f3c01b7c14f5d # v1.1.24
     - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
     - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp"
     - run: rm key.pem

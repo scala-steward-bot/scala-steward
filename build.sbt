@@ -2,7 +2,7 @@ scalaVersion := "3.8.3"
 
 evictionErrorLevel := Level.Warn
 
-libraryDependencies += "org.scala-steward" %% "scala-steward-core" % "0.38.0"
+libraryDependencies += "org.scala-steward" %% "scala-steward-core" % "0.38.1"
 
 scalacOptions ++= Seq(
   "-deprecation",

@@ -8,6 +8,10 @@ on:
 concurrency: steward
 jobs:
   scala-steward:
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [0, 1, 2, 3]
     runs-on: ubuntu-latest
     timeout-minutes: 60
     if: ${{ github.repository_owner == 'scala-steward-bot' }}
@@ -19,7 +23,7 @@ jobs:
         distribution: temurin
     - uses: sbt/setup-sbt@af116cce31c00823d3903ce687f9cda3a4f19f1b # v1.2.1
     - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
-    - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp"
+    - run: sbt -v "runMain scala_steward_bot.GetReposFromGitHubApp ${{ matrix.index }} 4"
     - run: rm key.pem
     - run: git diff
     - run: cat repos.md

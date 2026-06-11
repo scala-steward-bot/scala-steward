@@ -38,3 +38,4 @@ jobs:
         repos-file: "repos.md"
         do-not-fork: "false"
         repo-config: ".scala-steward.conf"
+        other-args: "--disable-default-repo-config"

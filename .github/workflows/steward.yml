@@ -37,3 +37,4 @@ jobs:
         github-token: ${{ secrets.MY_GITHUB_TOKEN }}
         repos-file: "repos.md"
         do-not-fork: "false"
+        repo-config: ".scala-steward.conf"

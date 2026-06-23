@@ -14,6 +14,7 @@ import org.scalasteward.core.forge.github.GitHubAuthAlg
 import org.scalasteward.core.util.HttpJsonClient
 import org.typelevel.log4cats.SelfAwareStructuredLogger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
+import scala.util.Random
 
 object GetReposFromGitHubApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
@@ -59,7 +60,7 @@ object GetReposFromGitHubApp extends IOApp {
           println((separatedValues.size, separatedValues))
           Files.writeString(
             reposFile,
-            separatedValues.mkString("", "\n", "\n"),
+            Random.shuffle(separatedValues).mkString("", "\n", "\n"),
           )
           ExitCode.Success
         }

@@ -23,7 +23,7 @@ jobs:
       with:
         client-id: 89536
         private-key: ${{ secrets.XUWEI_K_BOT_KEY }}
-    - uses: coursier/coursier-setup@3174df5c784a0c8724f06b7924b849551c40c39e # v3.0.3
+    - uses: coursier/coursier-setup@648df969f41ef15fda2baba8b37f9fa3d16390a3 # v3.0.4
     - run: cs install scalafmt
     - run: cs install scalafix
     - run: GITHUB_TOKEN="${{ steps.generate_token.outputs.token }}" sbt -v selfUpdate

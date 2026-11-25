@@ -12,18 +12,18 @@ jobs:
     timeout-minutes: 20
     if: ${{ github.repository_owner == 'scala-steward-bot' }}
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-java@v6.3.0
       with:
         java-version: 21
         distribution: temurin
-    - uses: sbt/setup-sbt@7e114eae4f32ec3f93c851c2793376a77f384409 # v1.5.15
+    - uses: sbt/setup-sbt@v1.5.15
     - id: generate_token
-      uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+      uses: actions/create-github-app-token@v3.4.0
       with:
         client-id: 89536
         private-key: ${{ secrets.XUWEI_K_BOT_KEY }}
-    - uses: coursier/coursier-setup@6eefb29fad2c9de9f52a5f2cef1154195c9d4609 # v3.1.1
+    - uses: coursier/setup-action@v3.1.1
     - run: cs install scalafmt
     - run: cs install scalafix
     - run: GITHUB_TOKEN="${{ steps.generate_token.outputs.token }}" sbt -v selfUpdate

@@ -16,12 +16,12 @@ jobs:
     timeout-minutes: 60
     if: ${{ github.repository_owner == 'scala-steward-bot' }}
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-java@v6.3.0
       with:
         java-version: 21
         distribution: temurin
-    - uses: sbt/setup-sbt@7e114eae4f32ec3f93c851c2793376a77f384409 # v1.5.15
+    - uses: sbt/setup-sbt@v1.5.15
     - run: echo "${{ secrets.APP_PRIVATE_KEY }}" > key.pem
     - run: sbt
            -v
@@ -30,7 +30,7 @@ jobs:
     - run: rm key.pem
     - run: git diff
     - run: cat repos.md
-    - uses: scala-steward-org/scala-steward-action@3e5cae868160200afda12b57c150e56cede989ab # v2.97.0
+    - uses: scala-steward-org/scala-steward-action@v2.97.0
       env:
         JAVA_OPTS: "-Xmx5G"
       with:
